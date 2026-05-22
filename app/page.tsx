@@ -26,23 +26,13 @@ export default function Home() {
       <h1>FixGo</h1>
 
       {tecnicos.length === 0 ? (
-        <p style={{ color: "#6b7280" }}>
-          No hay técnicos disponibles
-        </p>
+        <p>No hay técnicos disponibles</p>
       ) : (
         tecnicos.map((t: any) => (
-          <div key={t.id} className="card">
-            <h3 style={{ margin: 0 }}>{t.nombre}</h3>
-
-            <p style={{ color: "#6b7280" }}>
-              {t.oficio} - {t.distrito}
-            </p>
-
-            <a
-              href={t.whatsapp}
-              target="_blank"
-              rel="noreferrer"
-            >
+          <div key={t.id}>
+            <h3>{t.nombre}</h3>
+            <p>{t.oficio} - {t.distrito}</p>
+            <a href={t.whatsapp} target="_blank">
               WhatsApp
             </a>
           </div>
