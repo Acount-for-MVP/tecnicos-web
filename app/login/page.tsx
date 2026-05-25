@@ -1,25 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabase";
 
 export default function Login() {
   const router = useRouter();
 
-  useEffect(() => {
-    checkUser();
-  }, []);
-
-  async function checkUser() {
-    const { data } = await supabase.auth.getUser();
-
-    if (data.user) {
-      router.push("/");
-    }
-  }
-
-  async function loginGoogle() {
+  async function loginCliente() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
     });
@@ -28,14 +15,30 @@ export default function Login() {
   return (
     <main style={styles.container}>
       <div style={styles.card}>
-        <h1 style={styles.title}>🔧 FixGo</h1>
+
+        {/* LOGO */}
+        <div style={styles.logoBox}>
+          <span style={styles.icon}>🔧</span>
+          <h1 style={styles.title}>FixGo</h1>
+        </div>
+
+        {/* SLOGAN */}
         <p style={styles.subtitle}>
-          Inicia sesión para encontrar técnicos en Lima
+          Encuentra técnicos confiables en segundos
         </p>
 
-        <button onClick={loginGoogle} style={styles.button}>
-          Continuar con Google
+        {/* BOTONES */}
+        <button style={styles.clientBtn} onClick={loginCliente}>
+          Soy Cliente
         </button>
+
+        <button
+          style={styles.techBtn}
+          onClick={() => alert("Próximamente: registro de técnicos")}
+        >
+          Soy Técnico
+        </button>
+
       </div>
     </main>
   );
@@ -50,28 +53,59 @@ const styles = {
     backgroundColor: "#0b1220",
     color: "white",
   },
+
   card: {
+    width: "350px",
     backgroundColor: "#111827",
     padding: "40px",
-    borderRadius: "15px",
+    borderRadius: "16px",
     textAlign: "center" as const,
-    boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+    boxShadow: "0 10px 40px rgba(0,0,0,0.6)",
   },
-  title: {
-    fontSize: "36px",
+
+  logoBox: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "10px",
     marginBottom: "10px",
   },
+
+  icon: {
+    fontSize: "28px",
+  },
+
+  title: {
+    fontSize: "32px",
+    fontWeight: "bold",
+    color: "#3b82f6",
+    margin: 0,
+  },
+
   subtitle: {
     color: "#9ca3af",
-    marginBottom: "20px",
+    marginBottom: "25px",
   },
-  button: {
+
+  clientBtn: {
+    width: "100%",
+    padding: "12px",
     backgroundColor: "#3b82f6",
-    color: "white",
     border: "none",
-    padding: "12px 20px",
     borderRadius: "10px",
-    cursor: "pointer",
+    color: "white",
     fontWeight: "bold",
+    cursor: "pointer",
+    marginBottom: "10px",
+  },
+
+  techBtn: {
+    width: "100%",
+    padding: "12px",
+    backgroundColor: "#1f2937",
+    border: "1px solid #374151",
+    borderRadius: "10px",
+    color: "white",
+    cursor: "pointer",
   },
 };
