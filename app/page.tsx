@@ -1,14 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
 export default function Home() {
   const [tecnicos, setTecnicos] = useState<any[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
+    checkUser();
     cargar();
   }, []);
+
+  async function checkUser() {
+    const { data } = await supabase.auth.getUser();
+
+    if (!data.user) {
+      router.push("/login");
+    }
+  }
 
   async function cargar() {
     const { data } = await supabase
@@ -20,7 +31,7 @@ export default function Home() {
 
   return (
     <main style={styles.container}>
-      <h1 style={styles.title}>🔧 Técnicos en Lima</h1>
+      <h1 style={styles.title}>🔧 FixGo - Técnicos en Lima</h1>
       <p style={styles.subtitle}>
         Encuentra técnicos confiables cerca de ti
       </p>
@@ -31,13 +42,14 @@ export default function Home() {
         <div style={styles.grid}>
           {tecnicos.map((t: any) => (
             <div key={t.id} style={styles.card}>
-              <h2 style={styles.name}>{t.Nombre}</h2>
+              <h2 style={styles.name}>{t.nombre}</h2>
+
               <p style={styles.info}>
-                {t.Oficio} • {t.Distrito}
+                {t.oficio} • {t.distrito}
               </p>
 
               <a
-                href={`https://wa.me/${String(t.Whatsapp).replace(/\D/g, "")}`}
+                href={`https://wa.me/${String(t.whatsapp).replace(/\D/g, "")}`}
                 target="_blank"
                 rel="noreferrer"
                 style={styles.button}
@@ -59,6 +71,8 @@ const styles = {
     backgroundColor: "#0f172a",
     minHeight: "100vh",
     color: "white",
+    maxWidth: "1100px",
+    margin: "0 auto",
   },
   title: {
     fontSize: "40px",
@@ -71,7 +85,7 @@ const styles = {
   },
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
     gap: "20px",
   },
   card: {
